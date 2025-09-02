@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Czterej pancerni i pies</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f4f8; padding: 20px; }
+    .quiz-container { background: white; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h1 { text-align: center; }
+    .question { margin: 20px 0; }
+    .answers button { display: block; margin: 8px 0; padding: 10px; width: 100%; border: none; border-radius: 8px; background: #e3e7ed; cursor: pointer; transition: 0.2s; }
+    .answers button:hover { background: #cdd6e2; }
+    .correct { background: #b2f2bb !important; }
+    .incorrect { background: #ffa8a8 !important; }
+    #next-btn { margin-top: 20px; display: none; padding: 10px 20px; border: none; border-radius: 8px; background: #4dabf7; color: white; cursor: pointer; }
+    #score { text-align: center; margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz: Czterej pancerni i pies</h1>
+    <div id="quiz"></div>
+    <button id="next-btn">Następne pytanie</button>
+    <div id="score"></div>
+  </div>
+
+  <script>
+    const quizData = Array.from({length: 50}, (_, i) => ({
+      question: `Pytanie numer ${i+1}?`,
+      answers: ["Odp 1", "Odp 2", "Odp 3", "Odp 4"],
+      correct: 0
+    }));
+
+    // Tasowanie pytań
+    quizData.sort(() => Math.random() - 0.5);
+
+    let currentQuestion = 0;
+    let score = 0;
+    const quizEl = document.getElementById("quiz");
+    const nextBtn = document.getElementById("next-btn");
+    const scoreEl = document.getElementById("score");
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      quizEl.innerHTML = `<div class='question'><h3>${q.question}</h3><div class='answers'></div></div>`;
+      const answersDiv = quizEl.querySelector('.answers');
+
+      q.answers.forEach((ans, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = ans;
+        btn.addEventListener("click", () => selectAnswer(index, btn));
+        answersDiv.appendChild(btn);
+      });
+
+      scoreEl.textContent = `Wynik: ${score} / ${quizData.length}`;
+    }
+
+    function selectAnswer(index, button) {
+      const q = quizData[currentQuestion];
+      const buttons = quizEl.querySelectorAll("button");
+      buttons.forEach(b => b.disabled = true);
+      if (index === q.correct) {
+        button.classList.add("correct");
+        score++;
+      } else {
+        button.classList.add("incorrect");
+        buttons[q.correct].classList.add("correct");
+      }
+      nextBtn.style.display = "block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+        nextBtn.style.display = "none";
+      } else {
+        quizEl.innerHTML = `<h2>Koniec quizu! 🎉</h2><p>Twój wynik: ${score} / ${quizData.length}</p>`;
+        nextBtn.style.display = "none";
+        scoreEl.textContent = "";
+      }
+    });
+
+    loadQuestion();
+  </script>
+</body>
+</html>
