@@ -1,103 +1,99 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<title>Quiz: Czterej pancerni i pies</title>
-<style>
-body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
-h1 { text-align: center; }
-.question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-button { padding: 10px 15px; margin-top: 20px; font-size: 16px; border: none; border-radius: 5px; background: #007bff; color: #fff; cursor: pointer; }
-button:hover { background: #0056b3; }
-#result { font-size: 20px; font-weight: bold; margin-top: 20px; text-align: center; }
-</style>
+  <meta charset="UTF-8">
+  <title>Quiz: Czterej pancerni i pies</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
+    h1 { text-align: center; }
+    .question { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    button { padding: 10px 15px; margin-top: 20px; font-size: 16px; border: none; border-radius: 5px; background: #007bff; color: #fff; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    #result { font-size: 20px; font-weight: bold; margin-top: 20px; text-align: center; }
+  </style>
 </head>
 <body>
-<h1>Quiz: Czterej pancerni i pies</h1>
-<form id="quizForm"></form>
-<button type="button" onclick="checkAnswers()">Sprawdź wynik</button>
-<div id="result"></div>
+  <h1>Quiz: Czterej pancerni i pies</h1>
+  <form id="quizForm" onsubmit="return false;"></form>
+  <button type="button" onclick="checkAnswers()">Sprawdź wynik</button>
+  <div id="result"></div>
 
+  <script>
+    const questions = [
+      {q: "Jak nazywał się pies bohater serialu?", a: ["Szarik", "Reksio", "Cywil"], correct: 0},
+      {q: "Jak miał na imię dowódca załogi czołgu?", a: ["Grigorij", "Janek", "Gustlik"], correct: 1},
+      {q: "Jak nazywał się czołg bohaterów?", a: ["Tygrys", "Rudy 102", "Pantera"], correct: 1},
+      {q: "Kim z zawodu był Gustlik przed wojną?", a: ["Kucharzem", "Mechanikiem", "Górnikiem"], correct: 2},
+      {q: "Z jakiego kraju pochodził Grigorij?", a: ["Z Polski", "Z Rosji", "Z Ukrainy"], correct: 1},
+      {q: "Kto wcielił się w rolę Janka Kosa?", a: ["Janusz Gajos", "Roman Wilhelmi", "Franciszek Pieczka"], correct: 0},
+      {q: "Jak miała na imię siostra Janka, którą odnaleziono?", a: ["Marusia", "Wanda", "Lidka"], correct: 1},
+      {q: "Jak miała na imię radziecka sanitariuszka zakochana w Janku?", a: ["Lidka", "Marusia", "Ania"], correct: 1},
+      {q: "Kto był najmłodszy w załodze?", a: ["Janek", "Grigorij", "Tomek"], correct: 0},
+      {q: "Jakie było imię ojca Janka?", a: ["Maciej", "Stanisław", "Antoni"], correct: 0},
+      {q: "Jak miał na nazwisko Gustlik?", a: ["Jeleń", "Jezierski", "Nowak"], correct: 0},
+      {q: "Kto z załogi pochodził ze Śląska?", a: ["Gustlik", "Janek", "Grigorij"], correct: 0},
+      {q: "Kto adoptował psa Szarika?", a: ["Janek", "Grigorij", "Cała załoga"], correct: 0},
+      {q: "Kto grał Grigorija?", a: ["Włodzimierz Press", "Roman Wilhelmi", "Mieczysław Czechowicz"], correct: 0},
+      {q: "Kto grał Gustlika?", a: ["Franciszek Pieczka", "Janusz Gajos", "Mieczysław Czechowicz"], correct: 0},
+      {q: "Kto grał Olgierda?", a: ["Roman Wilhelmi", "Włodzimierz Press", "Franciszek Pieczka"], correct: 0},
+      {q: "Ile odcinków miał serial?", a: ["15", "21", "18"], correct: 1},
+      {q: "W jakich latach powstawał serial?", a: ["1960-1965", "1966-1970", "1972-1975"], correct: 1},
+      {q: "Jak naprawdę wabił się pies grający Szarika?", a: ["Trymer", "Szarik", "Reks"], correct: 0},
+      {q: "Kto był twórcą powieści, na podstawie której powstał serial?", a: ["Adam Bahdaj", "Janusz Przymanowski", "Tadeusz Dołęga-Mostowicz"], correct: 1},
+      {q: "Kto skomponował muzykę do serialu?", a: ["Wojciech Kilar", "Adam Walaciński", "Andrzej Kurylewicz"], correct: 1},
+      {q: "Jak nazywał się odcinek, w którym załoga poznaje Marusię?", a: ["Załoga", "Pierwsza miłość", "Witamy w Lublinie"], correct: 1},
+      {q: "W jakim kolorze był czołg Rudy 102 w serialu?", a: ["Oliwkowy", "Szary", "Czarny"], correct: 0},
+      {q: "Jaką funkcję w załodze pełnił Grigorij?", a: ["Strzelec", "Kierowca-mechanik", "Dowódca"], correct: 1},
+      {q: "Jaką funkcję pełnił Gustlik?", a: ["Ładowniczy", "Radiooperator", "Dowódca"], correct: 0},
+      {q: "Kto był pierwszym dowódcą Rudego 102?", a: ["Janek", "Olgierd", "Grigorij"], correct: 1},
+      {q: "Jak zginął Olgierd?", a: ["W walce", "W zasadzce", "Został ranny i zmarł"], correct: 0},
+      {q: "Jakiej narodowości była Marusia?", a: ["Polka", "Ukrainka", "Rosjanka"], correct: 2},
+      {q: "Jakie było imię syna Janka i Marusi?", a: ["Grześ", "Marek", "Andrzej"], correct: 0},
+      {q: "Jaką rangę wojskową miał Janek pod koniec serialu?", a: ["Kapitan", "Porucznik", "Major"], correct: 1},
+      {q: "Który z bohaterów mówił gwarą śląską?", a: ["Janek", "Gustlik", "Grigorij"], correct: 1},
+      {q: "Kto reżyserował serial?", a: ["Andrzej Wajda", "Konrad Nałęcki", "Jerzy Hoffman"], correct: 1},
+      {q: "W jakim odcinku pojawił się ojciec Janka?", a: ["Zakładnicy", "Most", "Brzeg"], correct: 0},
+      {q: "Jak zginął Szarik?", a: ["Pod koniec wojny", "W wypadku", "W walce z Niemcami"], correct: 2},
+      {q: "Gdzie toczy się akcja pierwszego odcinka?", a: ["Na Wołyniu", "W Polsce", "Na Wileńszczyźnie"], correct: 0},
+      {q: "Jak nazywała się matka Janka?", a: ["Maria", "Anna", "Helena"], correct: 0},
+      {q: "Kto śpiewał piosenkę w czołówce serialu?", a: ["Edmund Fetting", "Czesław Niemen", "Marek Grechuta"], correct: 0},
+      {q: "Jak miał na nazwisko Janek?", a: ["Kos", "Nowak", "Lewandowski"], correct: 0},
+      {q: "Jak nazywał się koń pojawiający się w serialu?", a: ["Czarny", "Cygan", "Bury"], correct: 1},
+      {q: "Ile serii miał serial?", a: ["3", "4", "5"], correct: 1},
+      {q: "Kto wcielił się w rolę Marusi?", a: ["Małgorzata Niemirska", "Polina Rajko", "Pola Raksa"], correct: 2},
+      {q: "Kto wcielił się w rolę Wandy?", a: ["Beata Tyszkiewicz", "Małgorzata Niemirska", "Barbara Brylska"], correct: 1},
+      {q: "Jaką funkcję pełnił Janek w załodze?", a: ["Strzelec", "Radiooperator", "Dowódca"], correct: 0},
+      {q: "Jakie zwierzę poza Szarikiem pojawiało się w serialu?", a: ["Koń", "Kot", "Papuga"], correct: 0},
+      {q: "W jakim roku odbyła się premiera pierwszego odcinka?", a: ["1966", "1968", "1970"], correct: 0},
+      {q: "Który z bohaterów często gotował dla załogi?", a: ["Gustlik", "Grigorij", "Janek"], correct: 0},
+      {q: "Jak zakończył się serial?", a: ["Wyzwoleniem Berlina", "Powrotem do domu", "Śmiercią bohaterów"], correct: 0},
+      {q: "Jak miał na imię aktor grający Olgierda?", a: ["Roman Wilhelmi", "Andrzej Kopiczyński", "Daniel Olbrychski"], correct: 0},
+      {q: "Który bohater zginął w jednym z odcinków?", a: ["Olgierd", "Gustlik", "Janek"], correct: 0},
+      {q: "Jakie zwierzę podarowano Jankowi w jednym z odcinków?", a: ["Konika", "Kota", "Krowę"], correct: 0}
+    ];
 
-<script>
-const questions = [
-{q: "Jak nazywał się pies bohater serialu?", a: ["Szarik", "Reksio", "Cywil"], correct: 0},
-{q: "Jak miał na imię dowódca załogi czołgu?", a: ["Grigorij", "Janek", "Gustlik"], correct: 1},
-{q: "Jak nazywał się czołg bohaterów?", a: ["Tygrys", "Rudy 102", "Pantera"], correct: 1},
-{q: "Kim z zawodu był Gustlik przed wojną?", a: ["Kucharzem", "Mechanikiem", "Górnikiem"], correct: 2},
-{q: "Z jakiego kraju pochodził Grigorij?", a: ["Z Polski", "Z Rosji", "Z Ukrainy"], correct: 1},
-{q: "Kto wcielił się w rolę Janka Kosa?", a: ["Janusz Gajos", "Roman Wilhelmi", "Franciszek Pieczka"], correct: 0},
-{q: "Jak miała na imię siostra Janka, którą odnaleziono?", a: ["Marusia", "Wanda", "Lidka"], correct: 1},
-{q: "Jak miała na imię radziecka sanitariuszka zakochana w Janku?", a: ["Lidka", "Marusia", "Ania"], correct: 1},
-{q: "Kto był najmłodszy w załodze?", a: ["Janek", "Grigorij", "Tomek"], correct: 0},
-{q: "Jakie było imię ojca Janka?", a: ["Maciej", "Stanisław", "Antoni"], correct: 0},
-{q: "Jak miał na nazwisko Gustlik?", a: ["Jezierski", "Jeleń", "Jeleń"], correct: 1},
-{q: "Kto z załogi pochodził ze Śląska?", a: ["Gustlik", "Janek", "Grigorij"], correct: 0},
-{q: "Kto adoptował psa Szarika?", a: ["Janek", "Grigorij", "Cała załoga"], correct: 0},
-{q: "Kto grał Grigorija?", a: ["Włodzimierz Press", "Roman Wilhelmi", "Mieczysław Czechowicz"], correct: 0},
-{q: "Kto grał Gustlika?", a: ["Franciszek Pieczka", "Janusz Gajos", "Mieczysław Czechowicz"], correct: 0},
-{q: "Kto grał Olgierda?", a: ["Roman Wilhelmi", "Włodzimierz Press", "Franciszek Pieczka"], correct: 0},
-{q: "Ile odcinków miał serial?", a: ["15", "21", "18"], correct: 1},
-{q: "W jakich latach powstawał serial?", a: ["1960-1965", "1966-1970", "1972-1975"], correct: 1},
-{q: "Jak naprawdę wabił się pies grający Szarika?", a: ["Trymer", "Szarik", "Reks"], correct: 0},
-{q: "Kto był twórcą powieści, na podstawie której powstał serial?", a: ["Adam Bahdaj", "Janusz Przymanowski", "Tadeusz Dołęga-Mostowicz"], correct: 1},
-{q: "Kto skomponował muzykę do serialu?", a: ["Wojciech Kilar", "Adam Walaciński", "Andrzej Kurylewicz"], correct: 1},
-{q: "Jak nazywał się odcinek, w którym załoga poznaje Marusię?", a: ["Załoga", "Pierwsza miłość", "Witamy w Lublinie"], correct: 1},
-{q: "W jakim kolorze był czołg Rudy 102 w serialu?", a: ["Oliwkowy", "Szary", "Czarny"], correct: 0},
-{q: "Jaką funkcję w załodze pełnił Grigorij?", a: ["Strzelec", "Kierowca-mechanik", "Dowódca"], correct: 1},
-{q: "Jaką funkcję pełnił Gustlik?", a: ["Ładowniczy", "Radiooperator", "Dowódca"], correct: 0},
-{q: "Kto był pierwszym dowódcą Rudego 102?", a: ["Janek", "Olgierd", "Grigorij"], correct: 1},
-{q: "Jak zginął Olgierd?", a: ["W walce", "W zasadzce", "Został ranny i zmarł"], correct: 0},
-{q: "Jakiej narodowości była Marusia?", a: ["Polka", "Ukrainka", "Rosjanka"], correct: 2},
-{q: "Jakie było imię syna Janka i Marusi?", a: ["Grześ", "Marek", "Andrzej"], correct: 0},
-{q: "Jaką rangę wojskową miał Janek pod koniec serialu?", a: ["Kapitan", "Porucznik", "Major"], correct: 1},
-{q: "Który z bohaterów mówił gwarą śląską?", a: ["Janek", "Gustlik", "Grigorij"], correct: 1},
-{q: "Kto reżyserował serial?", a: ["Andrzej Wajda", "Konrad Nałęcki", "Jerzy Hoffman"], correct: 1},
-{q: "W jakim odcinku pojawił się ojciec Janka?", a: ["Zakładnicy", "Most", "Brzeg"], correct: 0},
-{q: "Jak zginął Szarik?", a: ["Pod koniec wojny", "W wypadku", "W walce z Niemcami"], correct: 2},
-{q: "Gdzie toczy się akcja pierwszego odcinka?", a: ["Na Wołyniu", "W Polsce", "Na Wileńszczyźnie"], correct: 0},
-{q: "Jak nazywała się matka Janka?", a: ["Maria", "Anna", "Helena"], correct: 0},
-{q: "Kto śpiewał piosenkę w czołówce serialu?", a: ["Edmund Fetting", "Czesław Niemen", "Marek Grechuta"], correct: 0},
-{q: "Jak miał na nazwisko Janek?", a: ["Kos", "Nowak", "Lewandowski"], correct: 0},
-{q: "Jak nazywał się koń pojawiający się w serialu?", a: ["Czarny", "Cygan", "Bury"], correct: 1},
-{q: "Ile serii miał serial?", a: ["3", "4", "5"], correct: 1},
-{q: "Kto wcielił się w rolę Marusi?", a: ["Małgorzata Niemirska", "Polina Rajko", "Pola Raksa"], correct: 2},
-{q: "Kto wcielił się w rolę Wandy?", a: ["Beata Tyszkiewicz", "Małgorzata Niemirska", "Barbara Brylska"], correct: 1},
-{q: "Jaką funkcję pełnił Janek w załodze?", a: ["Strzelec", "Radiooperator", "Dowódca"], correct: 0},
-{q: "Jakie zwierzę poza Szarikiem pojawiało się w serialu?", a: ["Koń", "Kot", "Papuga"], correct: 0},
-{q: "W jakim roku odbyła się premiera pierwszego odcinka?", a: ["1966", "1968", "1970"], correct: 0},
-{q: "Który z bohaterów często gotował dla załogi?", a: ["Gustlik", "Grigorij", "Janek"], correct: 0},
-{q: "Jak zakończył się serial?", a: ["Wyzwoleniem Berlina", "Powrotem do domu", "Śmiercią bohaterów"], correct: 0},
-{q: "Jak miał na imię aktor grający Olgierda?", a: ["Roman Wilhelmi", "Andrzej Kopiczyński", "Daniel Olbrychski"], correct: 0},
-{q: "Który bohater zginął w jednym z odcinków?", a: ["Olgierd", "Gustlik", "Janek"], correct: 0},
-{q: "Jakie zwierzę podarowano Jankowi w jednym z odcinków?", a: ["Konika", "Kota", "Krowę"], correct: 0}
-];
+    const form = document.getElementById("quizForm");
 
+    questions.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<p><b>${index+1}. ${item.q}</b></p>`;
+      item.a.forEach((ans, i) => {
+        div.innerHTML += `<label><input type='radio' name='q${index}' value='${i}'> ${ans}</label><br>`;
+      });
+      form.appendChild(div);
+    });
 
-const form = document.getElementById("quizForm");
-
-
-questions.forEach((item, index) => {
-const div = document.createElement("div");
-div.className = "question";
-div.innerHTML = `<p><b>${index+1}. ${item.q}</b></p>`;
-item.a.forEach((ans, i) => {
-div.innerHTML += `<label><input type='radio' name='q${index}' value='${i}'> ${ans}</label><br>`;
-});
-form.appendChild(div);
-});
-
-
-function checkAnswers() {
-let score = 0;
-questions.forEach((item, index) => {
-const selected = document.querySelector(`input[name=q${index}]:checked`);
-if (selected && parseInt(selected.value) === item.correct) {
-score++;
-}
-});
-document.getElementById("result").innerText = `Twój wynik: ${score} / ${questions.length}`;
-}
-</script>
+    function checkAnswers() {
+      let score = 0;
+      questions.forEach((item, index) => {
+        const selected = document.querySelector(`input[name=q${index}]:checked`);
+        if (selected && parseInt(selected.value, 10) === item.correct) {
+          score++;
+        }
+      });
+      document.getElementById("result").innerText = `Twój wynik: ${score} / ${questions.length}`;
+    }
+  </script>
 </body>
 </html>
