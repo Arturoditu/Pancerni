@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Quiz: Czterej pancerni i pies</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+background: #f0f4f8;
+padding: 20px;
+}
+.quiz-container {
+background: white;
+padding: 20px;
+border-radius: 12px;
+max-width: 600px;
+margin: auto;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+h1 {
+text-align: center;
+}
+.question {
+margin: 20px 0;
+}
+.answers button {
+display: block;
+margin: 8px 0;
+padding: 10px;
+width: 100%;
+border: none;
+border-radius: 8px;
+background: #e3e7ed;
+cursor: pointer;
+transition: 0.2s;
+}
+.answers button:hover {
+background: #cdd6e2;
+}
+.correct {
+background: #b2f2bb !important;
+}
+.incorrect {
+background: #ffa8a8 !important;
+}
+#next-btn {
+margin-top: 20px;
+display: none;
+padding: 10px 20px;
+border: none;
+border-radius: 8px;
+background: #4dabf7;
+color: white;
+cursor: pointer;
+}
+#score {
+text-align: center;
+margin-top: 15px;
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div class="quiz-container">
+<h1>Quiz: Czterej pancerni i pies</h1>
+<div id="quiz"></div>
+<button id="next-btn">Następne pytanie</button>
+<div id="score"></div>
+</div>
+
+
+<script>
+let quizData = [
+{ question: "Jak nazywał się pies w serialu?", answers: ["Szarik", "Azor", "Burek", "Łatek"], correct: 0 },
+{ question: "Jak miał na imię dowódca czołgu Rudy 102?", answers: ["Gustlik", "Janek", "Grigorij", "Tomek"], correct: 1 },
+{ question: "Z jakiego kraju pochodził Grigorij?", answers: ["Polska", "Rosja", "Ukraina", "Białoruś"], correct: 1 },
+{ question: "Jak nazywał się czołg bohaterów?", answers: ["Tygrys 007", "Rudy 102", "Pantera 300", "Sherman 21"], correct: 1 },
+{ question: "Kto był strzelcem w załodze?", answers: ["Gustlik", "Janek", "Grigorij", "Tomek"], correct: 0 },
+{ question: "Jak miał na imię mechanik czołgu?", answers: ["Grigorij", "Janek", "Tomek", "Olgierd"], correct: 0 },
+{ question: "Kto był radiotelegrafistą?", answers: ["Tomek", "Janek", "Olgierd", "Gustlik"], correct: 2 },
+</html>
